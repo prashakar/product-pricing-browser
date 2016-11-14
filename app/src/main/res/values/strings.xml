@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Pricing Browser</string>
+
+    <string name="addNewProduct">Add New Product</string>
+
+    <string name="nextBtn">Next</string>
+    <string name="previousBtn">Previous</string>
+    <string name="deleteBtn">Delete</string>
+
+    <string name="name">Product Name: </string>
+    <string name="description">Description: </string>
+    <string name="priceDollar">Price (CAD): </string>
+    <string name="priceBitcoin">Price (BitCoin): </string>
+</resources>
