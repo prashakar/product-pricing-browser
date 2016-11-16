@@ -37,6 +37,7 @@ public class ProductDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_STATEMENT);
+
     }
 
     @Override

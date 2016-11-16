@@ -25,10 +25,10 @@ public class BrowseProductsActivity extends AppCompatActivity implements AsyncRe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_products);
-        productDBHelper.addNewProduct(0, "test", "testdescription", 12.47f);
-        productDBHelper.addNewProduct(1, "test1", "testdescription2", 2.14f);
-        productDBHelper.addNewProduct(2, "test2", "testdescription3", 1.34f);
-        productDBHelper.addNewProduct(3, "test3", "testdescription4", 144f);
+        //addNewProduct(0, "Cheese", "Block of cheese", 12.47f);
+//        addNewProduct(1, "PlayStation", "Game console 120GB", 399.99f);
+//        addNewProduct(2, "Coke", "Pop can drink 355mL", 1.34f);
+//        addNewProduct(3, "Desktop Monitor", "4K 144Hz Monitor w/ Speaker", 640f);
     }
 
     @Override
@@ -95,6 +95,7 @@ public class BrowseProductsActivity extends AppCompatActivity implements AsyncRe
         System.out.println("ARRAY SIZE: " + productList.size());
 
         Button deleteButton = (Button)findViewById(R.id.delete);
+
         if(pointer == 0){
             System.out.println("START OF LIST");
             previousButton.setEnabled(false);
