@@ -3,6 +3,7 @@ package prashakar.pricingbrowser;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -58,6 +59,7 @@ public class BrowseProductsActivity extends AppCompatActivity implements AsyncRe
                 if (productList.isEmpty()){
                     intent.putExtra("addToId", 1);
                 } else {
+                    //used to get a new Id
                     intent.putExtra("addToId", productList.get(productList.size() - 1).getProductId() + 1);
                 }
                 startActivity(intent);
@@ -68,11 +70,12 @@ public class BrowseProductsActivity extends AppCompatActivity implements AsyncRe
     }
 
     public void showProduct(Product product){
-        System.out.println("POINTER VALUE: " + pointer);
+        Log.v("pointerValue", String.valueOf(pointer));
 
         String name = product.getName();
         String description = product.getDescription();
         Float priceDollar = product.getPrice();
+        //call method to convert CAD dollar into Bitcoin
         convertToBitcoin(priceDollar);
 
         EditText nameEdit = (EditText)findViewById(R.id.name);
@@ -89,37 +92,38 @@ public class BrowseProductsActivity extends AppCompatActivity implements AsyncRe
         updateButtons();
     }
 
+    //update buttons based on status of where pointer is located
     public void updateButtons(){
         Button previousButton = (Button)findViewById(R.id.previous);
         Button nextButton = (Button)findViewById(R.id.next);
-        System.out.println("ARRAY SIZE: " + productList.size());
+
+        Log.v("arraySize", String.valueOf(productList.size()));
 
         Button deleteButton = (Button)findViewById(R.id.delete);
 
         if(pointer == 0){
-            System.out.println("START OF LIST");
+            Log.v("listLocation", "START OF LIST");
             previousButton.setEnabled(false);
             nextButton.setEnabled(true);
             deleteButton.setEnabled(true);
         }
 
         if(0 < pointer && pointer < productList.size() -1 ){
-            System.out.println("MIDDLE OF LIST");
-
+            Log.v("listLocation", "MIDDLE OF LIST");
             nextButton.setEnabled(true);
             deleteButton.setEnabled(true);
             previousButton.setEnabled(true);
         }
 
         if(pointer == productList.size() - 1) {
-            System.out.println("END OF LIST");
+            Log.v("listLocation", "END OF LIST");
             previousButton.setEnabled(true);
             nextButton.setEnabled(false);
             deleteButton.setEnabled(true);
         }
 
         if((pointer == 0) && (pointer == productList.size() -1)){
-            System.out.println("LAST ELEMENT IN LIST");
+            Log.v("listLocation", "LAST ELEMENT IN LIST");
             previousButton.setEnabled(false);
             nextButton.setEnabled(false);
             deleteButton.setEnabled(true);
@@ -134,6 +138,7 @@ public class BrowseProductsActivity extends AppCompatActivity implements AsyncRe
         }
     }
 
+    //when array list is empty, show no products message
     public void noProducts(){
         LinearLayout nameLayout = (LinearLayout)findViewById(R.id.name_layout);
         LinearLayout descriptionLayout = (LinearLayout)findViewById(R.id.description_layout);
@@ -148,8 +153,8 @@ public class BrowseProductsActivity extends AppCompatActivity implements AsyncRe
         noProductText.setVisibility(View.VISIBLE);
     }
 
+    //used to restore layout back to showing all text views and edit texts
     public void restoreLayout(){
-
         LinearLayout nameLayout = (LinearLayout)findViewById(R.id.name_layout);
         LinearLayout descriptionLayout = (LinearLayout)findViewById(R.id.description_layout);
         LinearLayout priceDollarLayout = (LinearLayout)findViewById(R.id.priceDollar_layout);
@@ -185,12 +190,12 @@ public class BrowseProductsActivity extends AppCompatActivity implements AsyncRe
     }
 
     public void onDelete(View v){
+        //delete current index based on pointer value
         productDBHelper.deleteProduct(productList.get(pointer).getProductId());
+        //update the array list with new data
         productList = productDBHelper.getAllProducts();
-        System.out.println("onDelete POINTER " + pointer);
-        System.out.println("ARRAY SIZE " + productList.size());
-        //pointer += 1;
 
+        //if no elements exist in array list, then show no products message and update buttons to disable them
         if(productList.size() == 0) {
             noProducts();
             updateButtons();
