@@ -25,28 +25,23 @@ public class BrowseProductsActivity extends AppCompatActivity implements AsyncRe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_products);
-
+//        new Product(0, "test", "testdescription", 12.44f);
+//        new Product(1, "test", "testdescription", 19.33f);
+//        new Product(2, "test", "testdescription", 8.44f);
+//        new Product(3, "test", "testdescription", 3.44f);
+//        pointer = 3;
     }
 
     @Override
     protected void onResume(){
         super.onResume();
+        pointer  = 0;
         productList = productDBHelper.getAllProducts();
-        if (!productList.isEmpty()) {
-            for (Product product : productList) {
-                System.out.println(product.getName());
-            }
-        }
         if (productList.size() == 0){
             noProducts();
             updateButtons();
         } else {
-
             showProduct(productList.get(pointer));
-            pointer = productList.size();
-            System.out.println(pointer);
-
-
         }
     }
 
@@ -74,7 +69,8 @@ public class BrowseProductsActivity extends AppCompatActivity implements AsyncRe
     }
 
     public void showProduct(Product product){
-        pointer += 1;
+        System.out.println("POINTER VALUE: " + pointer);
+
         String name = product.getName();
         String description = product.getDescription();
         Float priceDollar = product.getPrice();
@@ -98,16 +94,7 @@ public class BrowseProductsActivity extends AppCompatActivity implements AsyncRe
         Button previousButton = (Button)findViewById(R.id.previous);
         Button nextButton = (Button)findViewById(R.id.next);
         System.out.println("UPDATE BUTTON" + productList.size());
-        if (productList.size() == pointer){
-            nextButton.setEnabled(false);
-        } else {
-            nextButton.setEnabled(true);
-        }
-        if (pointer == 1) {
-            previousButton.setEnabled(false);
-        } else {
-            previousButton.setEnabled(true);
-        }
+
         Button deleteButton = (Button)findViewById(R.id.delete);
         if (productList.size() == 0){
             deleteButton.setEnabled(false);
@@ -115,8 +102,23 @@ public class BrowseProductsActivity extends AppCompatActivity implements AsyncRe
             nextButton.setEnabled(false);
         } else {
             deleteButton.setEnabled(true);
-
+            previousButton.setEnabled(true);
+            nextButton.setEnabled(true);
         }
+
+//
+//
+//        if (productList.size() == pointer){
+//            nextButton.setEnabled(false);
+//        } else {
+//            nextButton.setEnabled(true);
+//        }
+//        if (pointer == 1) {
+//            previousButton.setEnabled(false);
+//        } else {
+//            previousButton.setEnabled(true);
+//        }
+
     }
 
     public void noProducts(){
@@ -160,24 +162,44 @@ public class BrowseProductsActivity extends AppCompatActivity implements AsyncRe
     }
 
     public void onNext(View v){
-        showProduct(productList.get(pointer -1 ));
-    }
-
-    public void onPrevious(View v){
-        pointer -= 2;
         showProduct(productList.get(pointer));
     }
 
+    public void onPrevious(View v){
+
+        showProduct(productList.get(pointer - 2));
+        pointer -= 2;
+        updateButtons();
+    }
+
     public void onDelete(View v){
-        productDBHelper.deleteProduct(productList.get(pointer - 1).getProductId());
-        pointer += 1;
-        if (productList.size() == pointer) {
-            showProduct(productList.get(pointer));
-        } else {
-            pointer -= 2;
+        productDBHelper.deleteProduct(productList.get(pointer).getProductId());
+        productList = productDBHelper.getAllProducts();
+        System.out.println("onDelete POINTER " + pointer);
+        System.out.println("ARRAY SIZE " + productList.size());
+        //pointer += 1;
+
+        if(productList.size() == 0) {
             noProducts();
             updateButtons();
+        } else if (productList.size() > 1) {
+            pointer += 1;
+            showProduct(productList.get(pointer));
+        } else {
+            showProduct(productList.get(pointer));
         }
+//
+//        if (productList.size() == (pointer - 1)) {
+//            showProduct(productList.get(pointer - 2 ));
+//            pointer -= 2;
+//            updateButtons();
+//        } else {
+//            pointer -= 2;
+//            System.out.println("onDelete POINTER2 " + pointer);
+//
+//            noProducts();
+//            updateButtons();
+//        }
     }
 
     @Override
