@@ -25,11 +25,10 @@ public class BrowseProductsActivity extends AppCompatActivity implements AsyncRe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_products);
-//        new Product(0, "test", "testdescription", 12.44f);
-//        new Product(1, "test", "testdescription", 19.33f);
-//        new Product(2, "test", "testdescription", 8.44f);
-//        new Product(3, "test", "testdescription", 3.44f);
-//        pointer = 3;
+        productDBHelper.addNewProduct(0, "test", "testdescription", 12.47f);
+        productDBHelper.addNewProduct(1, "test1", "testdescription2", 2.14f);
+        productDBHelper.addNewProduct(2, "test2", "testdescription3", 1.34f);
+        productDBHelper.addNewProduct(3, "test3", "testdescription4", 144f);
     }
 
     @Override
@@ -93,32 +92,45 @@ public class BrowseProductsActivity extends AppCompatActivity implements AsyncRe
     public void updateButtons(){
         Button previousButton = (Button)findViewById(R.id.previous);
         Button nextButton = (Button)findViewById(R.id.next);
-        System.out.println("UPDATE BUTTON" + productList.size());
+        System.out.println("ARRAY SIZE: " + productList.size());
 
         Button deleteButton = (Button)findViewById(R.id.delete);
-        if (productList.size() == 0){
-            deleteButton.setEnabled(false);
+        if(pointer == 0){
+            System.out.println("START OF LIST");
             previousButton.setEnabled(false);
-            nextButton.setEnabled(false);
-        } else {
-            deleteButton.setEnabled(true);
-            previousButton.setEnabled(true);
             nextButton.setEnabled(true);
+            deleteButton.setEnabled(true);
         }
 
-//
-//
-//        if (productList.size() == pointer){
-//            nextButton.setEnabled(false);
-//        } else {
-//            nextButton.setEnabled(true);
-//        }
-//        if (pointer == 1) {
-//            previousButton.setEnabled(false);
-//        } else {
-//            previousButton.setEnabled(true);
-//        }
+        if(0 < pointer && pointer < productList.size() -1 ){
+            System.out.println("MIDDLE OF LIST");
 
+            nextButton.setEnabled(true);
+            deleteButton.setEnabled(true);
+            previousButton.setEnabled(true);
+        }
+
+        if(pointer == productList.size() - 1) {
+            System.out.println("END OF LIST");
+            previousButton.setEnabled(true);
+            nextButton.setEnabled(false);
+            deleteButton.setEnabled(true);
+        }
+
+        if((pointer == 0) && (pointer == productList.size() -1)){
+            System.out.println("LAST ELEMENT IN LIST");
+            previousButton.setEnabled(false);
+            nextButton.setEnabled(false);
+            deleteButton.setEnabled(true);
+
+        }
+
+        if(productList.size() == 0){
+            System.out.println("LIST EMPTY");
+            previousButton.setEnabled(false);
+            nextButton.setEnabled(false);
+            deleteButton.setEnabled(false);
+        }
     }
 
     public void noProducts(){
@@ -162,14 +174,13 @@ public class BrowseProductsActivity extends AppCompatActivity implements AsyncRe
     }
 
     public void onNext(View v){
+        pointer += 1;
         showProduct(productList.get(pointer));
     }
 
     public void onPrevious(View v){
-
-        showProduct(productList.get(pointer - 2));
-        pointer -= 2;
-        updateButtons();
+        pointer -= 1;
+        showProduct(productList.get(pointer));
     }
 
     public void onDelete(View v){
@@ -182,24 +193,14 @@ public class BrowseProductsActivity extends AppCompatActivity implements AsyncRe
         if(productList.size() == 0) {
             noProducts();
             updateButtons();
-        } else if (productList.size() > 1) {
-            pointer += 1;
-            showProduct(productList.get(pointer));
         } else {
-            showProduct(productList.get(pointer));
+            if(pointer == 0){
+                showProduct(productList.get(pointer));
+            } else {
+                pointer -= 1;
+                showProduct(productList.get(pointer));
+            }
         }
-//
-//        if (productList.size() == (pointer - 1)) {
-//            showProduct(productList.get(pointer - 2 ));
-//            pointer -= 2;
-//            updateButtons();
-//        } else {
-//            pointer -= 2;
-//            System.out.println("onDelete POINTER2 " + pointer);
-//
-//            noProducts();
-//            updateButtons();
-//        }
     }
 
     @Override
