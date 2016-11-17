@@ -37,7 +37,10 @@ public class ProductDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_STATEMENT);
-
+        addNewProduct(0, "Cheese", "Block of cheese", 12.47f, db);
+        addNewProduct(1, "PlayStation", "Game console 120GB", 399.99f, db);
+        addNewProduct(2, "Coke", "Pop can drink 355mL", 1.34f, db);
+        addNewProduct(3, "Desktop Monitor", "4K 144Hz Monitor w/ Speaker", 640f, db);
     }
 
     @Override
@@ -74,8 +77,10 @@ public class ProductDBHelper extends SQLiteOpenHelper {
         return results;
     }
 
-    public Product addNewProduct(int productId, String name, String description, float price){
-        SQLiteDatabase db = this.getWritableDatabase();
+    public Product addNewProduct(int productId, String name, String description, float price, SQLiteDatabase db){
+        if (db == null){
+            db = this.getWritableDatabase();
+        }
         ContentValues values = new ContentValues();
         values.put("productId", productId);
         values.put("name", name);

@@ -28,11 +28,11 @@ public class AddProductActivity extends AppCompatActivity {
         String description = descriptionEdit.getText().toString();
         Float priceDollar = Float.valueOf(priceDollarEdit.getText().toString());
 
-        productDBHelper.addNewProduct(addToId, name, description, priceDollar);
+        productDBHelper.addNewProduct(addToId, name, description, priceDollar, null);
         finish();
     }
 
     public void onCancel(View v){
-
+        finish();
     }
 }

@@ -26,10 +26,6 @@ public class BrowseProductsActivity extends AppCompatActivity implements AsyncRe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_products);
-        //addNewProduct(0, "Cheese", "Block of cheese", 12.47f);
-//        addNewProduct(1, "PlayStation", "Game console 120GB", 399.99f);
-//        addNewProduct(2, "Coke", "Pop can drink 355mL", 1.34f);
-//        addNewProduct(3, "Desktop Monitor", "4K 144Hz Monitor w/ Speaker", 640f);
     }
 
     @Override
